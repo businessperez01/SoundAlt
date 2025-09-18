@@ -4,32 +4,20 @@
         {
             "src": "server.js",
             "use": "@vercel/node"
+        },
+        {
+            "src": "client/**",
+            "use": "@vercel/static"
         }
     ],
     "routes": [
         {
             "src": "/api/(.*)",
-            "dest": "/server.js"
+            "dest": "server.js"
         },
         {
             "src": "/uploads/(.*)",
-            "dest": "/server.js"
-        },
-        {
-            "src": "/login",
-            "dest": "/server.js"
-        },
-        {
-            "src": "/register",
-            "dest": "/server.js"
-        },
-        {
-            "src": "/profile",
-            "dest": "/server.js"
-        },
-        {
-            "src": "/upload",
-            "dest": "/server.js"
+            "dest": "server.js"
         },
         {
             "src": "/css/(.*)",
@@ -40,8 +28,11 @@
             "dest": "/client/js/$1"
         },
         {
+            "handle": "filesystem"
+        },
+        {
             "src": "/(.*)",
-            "dest": "/server.js"
+            "dest": "server.js"
         }
     ]
 }

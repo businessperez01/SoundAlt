@@ -14,6 +14,8 @@ app.use(cors());
 app.use(express.json());
 // Serve static files
 app.use(express.static(path.join(__dirname, 'client')));
+app.use('/css', express.static(path.join(__dirname, 'client/css')));
+app.use('/js', express.static(path.join(__dirname, 'client/js')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Connect to MongoDB
