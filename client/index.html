@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoundAlt - Instant Sound Buttons</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/particles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div id="particles-js"></div>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <a href="/">SoundAlt</a>
+        </div>
+        <div class="nav-links">
+            <a href="/" class="active">Home</a>
+            <a href="/upload" id="uploadLink">Upload</a>
+            <a href="/login" id="loginLink">Login</a>
+            <a href="/register" id="registerLink">Register</a>
+            <a href="/profile" id="profileLink" style="display: none;">Profile</a>
+            <button id="logoutBtn" style="display: none;">Logout</button>
+        </div>
+    </nav>
+
+    <main id="app">
+        <div class="content-container">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search sounds...">
+                <div class="tags-container" id="tagsFilter"></div>
+            </div>
+
+            <div class="welcome-message">
+                <h1>Welcome to SoundAlt</h1>
+                <p>Your go-to place for instant sound effects!</p>
+            </div>
+
+            <div class="sounds-grid" id="soundsGrid">
+                <!-- Sounds will be dynamically loaded here -->
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="js/particles-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

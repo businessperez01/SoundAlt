@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Sound - SoundAlt</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/particles.css">
+</head>
+<body>
+    <div id="particles-js"></div>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <a href="/">SoundAlt</a>
+        </div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/upload" class="active">Upload</a>
+            <a href="/profile" id="profileLink">Profile</a>
+            <button id="logoutBtn">Logout</button>
+        </div>
+    </nav>
+
+    <main id="app">
+        <div class="form-container">
+            <h2>Upload Sound</h2>
+            <form id="uploadForm">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" id="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="soundFile">Sound File (MP3, WAV, OGG)</label>
+                    <input type="file" id="soundFile" accept=".mp3,.wav,.ogg" required>
+                </div>
+                <div class="form-group">
+                    <label for="tags">Tags (comma separated)</label>
+                    <input type="text" id="tags" placeholder="funny, meme, game">
+                </div>
+                <div id="errorMessage" class="error-message"></div>
+                <div id="successMessage" class="success-message"></div>
+                <button type="submit" class="button">Upload Sound</button>
+            </form>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="js/particles-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Check if user is logged in
+        if (!localStorage.getItem('token')) {
+            window.location.href = '/login';
+        }
+
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+            errorMessage.textContent = '';
+            successMessage.textContent = '';
+
+            const formData = new FormData();
+            formData.append('title', document.getElementById('title').value);
+            formData.append('sound', document.getElementById('soundFile').files[0]);
+            formData.append('tags', document.getElementById('tags').value);
+
+            try {
+                const response = await fetch('/api/sounds', {
+                    method: 'POST',
+                    headers: {
+                        'x-auth-token': localStorage.getItem('token')
+                    },
+                    body: formData
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    successMessage.textContent = 'Sound uploaded successfully!';
+                    document.getElementById('uploadForm').reset();
+                } else {
+                    errorMessage.textContent = data.message || 'Upload failed';
+                }
+            } catch (error) {
+                errorMessage.textContent = 'An error occurred. Please try again.';
+            }
+        });
+    </script>
+</body>
+</html>
