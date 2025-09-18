@@ -12,8 +12,9 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static('client'));
-app.use('/uploads', express.static('uploads'));
+// Serve static files
+app.use(express.static(path.join(__dirname, 'client')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/soundalt')
@@ -26,24 +27,31 @@ app.use('/api/sounds', require('./routes/sounds'));
 
 // Page Routes
 app.get('/login', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'client', 'login.html'));
+  res.sendFile(path.join(__dirname, 'client', 'login.html'));
 });
 
 app.get('/register', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'client', 'register.html'));
+  res.sendFile(path.join(__dirname, 'client', 'register.html'));
 });
 
 app.get('/upload', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'client', 'upload.html'));
+  res.sendFile(path.join(__dirname, 'client', 'upload.html'));
 });
 
 app.get('/profile', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'client', 'profile.html'));
+  res.sendFile(path.join(__dirname, 'client', 'profile.html'));
 });
 
 // Catch all handler for the home page
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'client', 'index.html'));
+  // Add error handling for file serving
+  const indexPath = path.join(__dirname, 'client', 'index.html');
+  res.sendFile(indexPath, (err) => {
+    if (err) {
+      console.error('Error sending file:', err);
+      res.status(500).send('Error loading page');
+    }
+  });
 });
 
 // For local development
